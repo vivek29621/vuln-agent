@@ -4,6 +4,7 @@ import Icon from "@/components/Icons";
 
 const LINKS = [
   { href: "/", label: "Scan" },
+  { href: "/phish", label: "Phish", badge: "new" },
   { href: "/agents", label: "Agents" },
   { href: "/history", label: "History" },
 ];
@@ -37,6 +38,11 @@ export default function Nav() {
                 }`}
               >
                 {l.label}
+                {"badge" in l && l.badge === "new" && (
+                  <span className="ml-1.5 rounded-full bg-rose-600 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wide text-white">
+                    new
+                  </span>
+                )}
               </Link>
             );
           })}

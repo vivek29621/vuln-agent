@@ -1,6 +1,6 @@
 # VulnAgent
 
-**AI security agents that scan websites and write you a fix-it report.**
+**AI security agents that scan websites and write you a fix-it report.** Plus **PhishAgent**, a phishing simulation & human-risk trainer.
 
 > 🟢 **Live at [vuln-agent-nu.vercel.app](https://vuln-agent-nu.vercel.app)** — deployed on Vercel, auto-deploys on every push to `main`.
 
@@ -13,6 +13,30 @@ engine when it isn't.
 Inspired by the architecture of projects like [Vigolium](https://github.com/vigolium/vigolium)
 (deterministic scan modules + agentic AI analysis) and [BugTraceAI-CLI](https://github.com/BugTraceAI/BugTraceAI-CLI)
 (LLM + deterministic hybrid), built to be deployable in one click with zero keys.
+
+## PhishAgent
+
+The sibling tool in this repo — AI phishing simulation & human risk management, modeled on
+the Cimento playbook (multi-channel lures, adaptive micro-training, role-based risk scoring),
+with a twist: **you can also phish your AI agents** with prompt-injection lures.
+
+- **3 channels** — email, SMS, voice (deepfake-style scripts)
+- **8 scenarios** — IT password reset, vendor invoice BEC, executive gift-card favor, MFA
+  fatigue, delivery smishing, HR reward bait, deepfake wire call, and agent prompt injection
+- **AI-written lures** — fresh per target via Google AI when a key is set, deterministic
+  (honest, labeled) otherwise
+- **Decision simulation** — models whether the target clicks, replies, ignores, or reports;
+  multi-turn realism (the attacker builds trust before the ask)
+- **Transparent risk scoring** — channel, seniority, and agent factors; every score explained
+  by the model
+- **Adaptive micro-training** — a 60–90s module generated for the exact scenario just faced,
+  with the one verification habit to adopt
+- **Campaign history** — saved locally, re-openable anytime
+
+**Nothing is ever sent.** PhishAgent is a simulation core — it models outcomes like a
+tabletop exercise instead of delivering real lures to real inboxes. Real delivery
+(Cimento-style) would need a separate inbox/SMS/voice layer; this repo ships the core.
+Only ever run simulations against targets you're authorized to test.
 
 ## The agents
 
@@ -69,6 +93,8 @@ findings and labeled as such.
 
 - `POST /api/scan` `{ url, activeProbe }` → SSE stream of agent events, ending with the report
 - `POST /api/ask` `{ question, report }` → `{ answer, simulated }`
+- `POST /api/phish/simulate` `{ channel, scenarioId, target? }` → `{ result, training }`
+  (PhishAgent — the simulator can also run fully client-side on `/phish`)
 
 ## Deploy
 
